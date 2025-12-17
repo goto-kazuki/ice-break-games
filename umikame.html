@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <title>推理トークゲーム - アイスブレイクゲームひろば</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --main-color: #66CCFF; --accent-color: #FFC107; --sub-accent: #333366; --bg-light: #F0F8FF;
+      --shadow-card: 0 10px 25px rgba(102, 204, 255, 0.15);
+    }
+    body { margin: 0; font-family: 'M PLUS Rounded 1c', sans-serif; background: var(--bg-light); color: #333; }
+    
+    header {
+      background: linear-gradient(135deg, #fff, #F0F8FF);
+      padding: 30px 20px; text-align: center;
+      border-bottom: 4px solid var(--main-color);
+      border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;
+    }
+    .header-icon { width: 80px; height: 80px; object-fit: contain; margin-bottom: 10px; }
+    h1 { margin: 10px 0; color: var(--sub-accent); font-weight: 900; }
+
+    main { max-width: 800px; margin: 30px auto; padding: 0 20px 60px; }
+    .panel { background: #fff; padding: 30px; border-radius: 20px; box-shadow: var(--shadow-card); margin-bottom: 30px; }
+    
+    .btn { padding: 12px 24px; border-radius: 50px; border: none; font-weight: 900; cursor: pointer; font-size: 1rem; }
+    .btn-primary { background: linear-gradient(135deg, #FFC107, #FFD54F); color: #333; box-shadow: 0 4px 0 #DDA000; }
+    .btn-primary:hover { transform: translateY(2px); box-shadow: 0 2px 0 #DDA000; }
+    .btn-outline { background: #fff; border: 2px solid var(--accent-color); color: #d48806; }
+
+    .puzzle-box { background: #FFF8E1; padding: 20px; border-radius: 15px; border: 2px dashed #FFC107; margin-top: 15px; font-weight: 700; }
+    .answer-box { background: #E8F5E9; padding: 20px; border-radius: 15px; border: 2px solid #4CAF50; margin-top: 15px; color: #2E7D32; }
+
+    /* フッター */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: #999;
+      font-size: 0.85rem;
+      background: var(--sub-accent);
+    }
+    .footer-logo {
+      width: 100px;
+      margin-bottom: 10px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="menu.html" style="display:inline-block; margin-bottom:10px; text-decoration:none; color:var(--sub-accent); font-weight:700;">◀ メニューに戻る</a>
+    <br>
+    <img src="umigame.png" alt="ウミガメ" class="header-icon">
+    <h1>推理トークゲーム</h1>
+    <p style="color:var(--text-main); font-weight:700;">協力して真相に迫る！</p>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>🐢 このゲームについて</h2>
+      <p>司会が出す謎に対して「はい/いいえ」で答えられる質問を投げかけ、真相を推理するゲーム。質問すること自体が貢献になるので、発言のハードルが低いのが特徴です。</p>
+    </section>
+
+    <section class="panel">
+      <h2>🐢 遊び方</h2>
+      <p>1人が出題者（司会）になり、問題文を読み上げます。他の人は「はい/いいえ」で答えられる質問をして、真相を当ててください。</p>
+    </section>
+
+    <section class="panel">
+      <h2>📜 問題カード</h2>
+      <div style="text-align:center;">
+        <button id="show-puzzle-btn" class="btn btn-primary">問題を出す（ランダム）</button>
+      </div>
+
+      <div id="puzzle-area" style="display:none;">
+        <div class="puzzle-box" id="puzzle-text"></div>
+        <div style="text-align:center; margin-top:20px;">
+          <button id="reveal-answer-btn" class="btn btn-outline">答えを見る</button>
+        </div>
+        <div id="answer-area" class="answer-box" style="display:none;">
+          <strong>真相：</strong><br>
+          <div id="puzzle-answer"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <img src="team-logo.png" alt="BigStone チームロゴ" class="footer-logo">
+    <div style="color:#fff;">© 2025 アイスブレイクゲームひろば | BigStone</div>
+  </footer>
+
+  <script>
+    const puzzles = [
+      { q: "男は二択問題をよく出題するが、出題する相手は焦っていることが多いらしい。なぜ？", a: "男は救急隊員（119番の通信指令員）。「火事ですか？救急ですか？」という二択を聞いているため。" },
+      { q: "掃除をしていた男の子が褒められた時に掃除を止めた。なぜ？", a: "掃除機の音がうるさくて、褒め言葉を聞き取るためにスイッチを切ったから。" },
+      { q: "女はあるものを手に入れることができなかったが、喜んだ。いったいなぜ？", a: "お酒を買おうとしたら年齢確認されたため（若く見られて嬉しかった）。" },
+      { q: "男はレストランで一番高いメニューを頼んだが、一口も食べずに店を出た。なぜ？", a: "彼は漢字ドリルを作っている人で、メニューの漢字をチェックしに来ただけだった。" }
+    ];
+
+    const showBtn = document.getElementById('show-puzzle-btn');
+    const puzzleArea = document.getElementById('puzzle-area');
+    const puzzleText = document.getElementById('puzzle-text');
+    const revealBtn = document.getElementById('reveal-answer-btn');
+    const answerArea = document.getElementById('answer-area');
+    const puzzleAnswer = document.getElementById('puzzle-answer');
+
+    showBtn.addEventListener('click', () => {
+      const p = puzzles[Math.floor(Math.random() * puzzles.length)];
+      puzzleText.textContent = p.q;
+      puzzleAnswer.textContent = p.a;
+      puzzleArea.style.display = 'block';
+      answerArea.style.display = 'none';
+    });
+
+    revealBtn.addEventListener('click', () => {
+      answerArea.style.display = 'block';
+    });
+  </script>
+</body>
+</html>

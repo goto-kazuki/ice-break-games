@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <title>この数字どんな数字？ - アイスブレイクゲームひろば</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --main-color: #66CCFF; --accent-color: #FFC107; --sub-accent: #333366;
+      --bg-light: #F0F8FF; --shadow-card: 0 10px 25px rgba(102, 204, 255, 0.15);
+    }
+    body { margin: 0; font-family: 'M PLUS Rounded 1c', sans-serif; background: var(--bg-light); color: #333; line-height: 1.6; }
+
+    header {
+      background: linear-gradient(135deg, #fff, #F0F8FF);
+      padding: 30px 20px; text-align: center;
+      border-bottom: 4px solid var(--main-color);
+      border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;
+    }
+    .header-icon { width: 80px; height: 80px; object-fit: contain; margin-bottom: 10px; }
+    h1 { margin: 10px 0; color: var(--sub-accent); font-weight: 900; }
+
+    main { max-width: 800px; margin: 30px auto; padding: 0 20px 60px; }
+    .panel { background: #fff; padding: 30px; border-radius: 20px; box-shadow: var(--shadow-card); margin-bottom: 30px; }
+    .panel h2 { color: var(--sub-accent); border-left: 6px solid var(--accent-color); padding-left: 10px; font-size: 1.3rem; }
+
+    .btn { padding: 12px 24px; border-radius: 50px; border: none; font-weight: 900; cursor: pointer; transition: transform 0.2s; font-size: 1rem; }
+    .btn-primary { background: linear-gradient(135deg, #FFC107, #FFD54F); color: #333; box-shadow: 0 4px 0 #DDA000; }
+    .btn-primary:hover { transform: translateY(2px); box-shadow: 0 2px 0 #DDA000; }
+    .btn-secondary { background: #fff; color: var(--main-color); border: 2px solid var(--main-color); }
+    
+    input { padding: 12px; border: 2px solid #eee; border-radius: 10px; width: 100%; font-size: 1rem; }
+    .player-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    .player-table th, .player-table td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; }
+    .topic-card { background: #FFF8E1; padding: 20px; border-radius: 15px; border: 3px dashed var(--accent-color); text-align: center; margin-top: 15px; }
+
+    /* フッター */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: #999;
+      font-size: 0.85rem;
+      background: var(--sub-accent);
+    }
+    .footer-logo {
+      width: 100px;
+      margin-bottom: 10px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="menu.html" style="display:inline-block; margin-bottom:10px; text-decoration:none; color:var(--sub-accent); font-weight:700;">◀ メニューに戻る</a>
+    <br>
+    <img src="meter.png" alt="メーター" class="header-icon">
+    <h1>この数字どんな数字？</h1>
+    <p style="color:var(--text-main); font-weight:700;">数字で価値観を表現！</p>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>🔢 このゲームについて</h2>
+      <p>お題に対して1〜100の数字で自分の価値観を表現。「なぜその数字？」から会話が自然に広がり、相手の考え方や性格を知ることができます。</p>
+      <p style="margin-top:15px; background:#FFF8E1; padding:10px; border-radius:10px;">
+        <strong>お題例：</strong>「一人時間の充実度」「新しいことに挑戦する意欲」「健康意識の高さ」
+      </p>
+    </section>
+
+    <section class="panel">
+      <h2>① 人数とあだ名を登録</h2>
+      <div style="display:flex; gap:10px; align-items:flex-end;">
+        <div style="flex:1"><label>人数</label><input id="player-count" type="number" min="2" max="12" value="4"></div>
+        <button id="init-players-btn" class="btn btn-primary">開始</button>
+      </div>
+
+      <div id="nickname-area" style="display:none; margin-top:20px; background:#f9f9f9; padding:15px; border-radius:15px;">
+        <label>あだ名を追加</label>
+        <div style="display:flex; gap:10px; margin-top:5px;">
+          <input id="nickname-input" type="text" placeholder="例：しもしゅん">
+          <button id="add-nickname-btn" class="btn btn-secondary">登録</button>
+        </div>
+      </div>
+      <table id="player-table" class="player-table" style="display:none">
+        <thead><tr><th>#</th><th>名前</th><th>数字</th></tr></thead>
+        <tbody id="player-tbody"></tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>② お題</h2>
+      <div style="text-align:center;">
+        <button id="random-topic-btn" class="btn btn-secondary">お題を引く</button>
+      </div>
+      <div id="topic-card" class="topic-card" style="display:none">
+        <div id="topic-main" style="font-size:1.5rem; font-weight:900; color:var(--sub-accent);"></div>
+        <div id="topic-detail" style="margin-top:10px; color:#666;"></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>③ ゲーム進行</h2>
+      <div style="display:flex; gap:10px; justify-content:center;">
+        <button id="assign-numbers-btn" class="btn btn-primary" disabled>数字を配る</button>
+        <button id="shuffle-order-btn" class="btn btn-secondary" disabled>順番を決める</button>
+      </div>
+      <div id="turn-box" style="display:none; margin-top:20px; padding:20px; background:#E3F2FD; border-radius:15px; text-align:center;"></div>
+    </section>
+  </main>
+
+  <footer>
+    <img src="team-logo.png" alt="BigStone チームロゴ" class="footer-logo">
+    <div style="color:#fff;">© 2025 アイスブレイクゲームひろば | BigStone</div>
+  </footer>
+
+  <script>
+    const topics = [
+      { main: "外食で『おいしい』と感じるレベル", detail: "1＝ファストフード、100＝ミシュラン級" },
+      { main: "『おやつ』に払いたい金額感", detail: "1＝10円、100＝高級スイーツ" },
+      { main: "早起きの得意度（朝型度）", detail: "1＝全く無理、100＝毎朝4時起き" },
+      { main: "部屋の片づけ度", detail: "1＝足の踏み場なし、100＝モデルルーム" },
+      { main: "健康意識の高さ", detail: "1＝無頓着、100＝徹底管理" }
+    ];
+
+    let players = [], targetCount = 0, numbersAssigned = false, order = [], currentTurnIndex = 0;
+    const playerCountInput = document.getElementById("player-count");
+    const initPlayersBtn = document.getElementById("init-players-btn");
+    const nicknameAreaEl = document.getElementById("nickname-area");
+    const nicknameInput = document.getElementById("nickname-input");
+    const addNicknameBtn = document.getElementById("add-nickname-btn");
+    const playerTableEl = document.getElementById("player-table");
+    const playerTbodyEl = document.getElementById("player-tbody");
+    const randomTopicBtn = document.getElementById("random-topic-btn");
+    const topicCardEl = document.getElementById("topic-card");
+    const topicMainEl = document.getElementById("topic-main");
+    const topicDetailEl = document.getElementById("topic-detail");
+    const assignNumbersBtn = document.getElementById("assign-numbers-btn");
+    const shuffleOrderBtn = document.getElementById("shuffle-order-btn");
+    const turnBoxEl = document.getElementById("turn-box");
+
+    initPlayersBtn.addEventListener("click", ()=> {
+      const c = Number(playerCountInput.value); if(!c||c<2)return alert('2人以上で！');
+      targetCount = c; players=[]; playerTbodyEl.innerHTML=''; nicknameAreaEl.style.display='block'; playerTableEl.style.display='table';
+    });
+
+    addNicknameBtn.addEventListener("click", ()=> {
+      if(players.length>=targetCount) return alert('登録完了済みです');
+      const nick = nicknameInput.value.trim(); if(!nick)return;
+      players.push({nickname:nick, number:null});
+      const row = document.createElement("tr");
+      row.innerHTML = `<td>${players.length}</td><td>${nick}</td><td>-</td>`;
+      playerTbodyEl.appendChild(row); nicknameInput.value='';
+      if(players.length===targetCount) assignNumbersBtn.disabled=false;
+    });
+
+    randomTopicBtn.addEventListener("click", ()=> {
+      const t = topics[Math.floor(Math.random()*topics.length)];
+      topicMainEl.textContent=t.main; topicDetailEl.textContent=t.detail; topicCardEl.style.display='block';
+    });
+
+    assignNumbersBtn.addEventListener("click", ()=> {
+      players.forEach((p,i)=> { const num = Math.floor(Math.random()*100)+1; p.number=num; playerTbodyEl.rows[i].cells[2].textContent=num; });
+      numbersAssigned=true; shuffleOrderBtn.disabled=false;
+    });
+
+    shuffleOrderBtn.addEventListener("click", ()=> {
+      if(!numbersAssigned)return;
+      order = [...Array(players.length).keys()].sort(()=>Math.random()-0.5);
+      currentTurnIndex=0; showTurn(); turnBoxEl.style.display='block';
+    });
+
+    function showTurn(){
+      const p = players[order[currentTurnIndex]];
+      turnBoxEl.innerHTML = `<h3 style="margin:0">次は ${p.nickname} さん</h3><p style="font-size:1.2rem;font-weight:bold;color:#E91E63">数字：${p.number}</p><p>この数字っぽさを言葉で表現して！</p><button class="btn btn-secondary" onclick="nextTurn()">次の人へ</button>`;
+    }
+    window.nextTurn = function(){
+      if(currentTurnIndex < order.length-1){ currentTurnIndex++; showTurn(); }
+      else { turnBoxEl.innerHTML = '<h3>全員終了！</h3><p>数字の大小順に並べられたかな？答え合わせしよう！</p>'; }
+    }
+  </script>
+</body>
+</html>

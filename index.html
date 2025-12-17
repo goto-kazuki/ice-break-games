@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初対面でもすぐにゲームで仲良くなれる！ - アイスブレイクゲームひろば</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main-color: #66CCFF;
+            --main-dark: #4DB8EB;
+            --accent-color: #FFC107;
+            --accent-hover: #FFB300;
+            --sub-accent: #333366;
+            --bg-light: #F0F8FF;
+            --text-main: #333333;
+            --text-sub: #666666;
+            --shadow-card: 0 10px 25px rgba(102, 204, 255, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'M PLUS Rounded 1c', "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.8;
+            letter-spacing: 0.03em;
+        }
+
+        /* ========== ローディング画面 ========== */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        #loading-screen.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .loading-logo {
+            width: 120px;
+            margin-bottom: 20px;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .loading-text {
+            font-weight: 900;
+            color: var(--sub-accent);
+            font-size: 1.2rem;
+            letter-spacing: 0.1em;
+        }
+
+        /* ========== ナビゲーション ========== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+        }
+
+        .nav-logo {
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: var(--sub-accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--sub-accent);
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--main-color);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--main-color);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--sub-accent);
+        }
+
+        /* ========== 共通 ========== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--sub-accent);
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-color);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        .section {
+            padding: 100px 20px;
+        }
+
+        /* ========== ボタン ========== */
+        .btn-main {
+            display: inline-block;
+            background: linear-gradient(135deg, #FFC107 0%, #FFD54F 100%);
+            color: #333;
+            font-weight: 900;
+            font-size: 1.1rem;
+            padding: 16px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 4px 0 #DDA000, 0 8px 15px rgba(255, 193, 7, 0.4);
+            transition: all 0.2s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-main:hover {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #DDA000, 0 4px 10px rgba(255, 193, 7, 0.4);
+        }
+
+        .btn-main--large {
+            font-size: 1.3rem;
+            padding: 20px 60px;
+        }
+
+        .btn-game {
+            display: inline-block;
+            background: var(--main-color);
+            color: #fff;
+            font-weight: 700;
+            padding: 10px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 10px rgba(102, 204, 255, 0.4);
+            font-size: 0.95rem;
+        }
+
+        .btn-game:hover {
+            background: var(--main-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(102, 204, 255, 0.5);
+        }
+
+        /* ========== ファーストビュー ========== */
+        .first-view {
+            /* 背景画像 */
+            background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(240, 248, 255, 0.95)), url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            padding: 180px 20px 120px;
+            text-align: center;
+            border-bottom-left-radius: 60px;
+            border-bottom-right-radius: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .first-view .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .tagline {
+            display: inline-block;
+            background: var(--main-color);
+            color: #fff;
+            padding: 8px 24px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 1rem;
+            margin-bottom: 24px;
+            letter-spacing: 0.05em;
+        }
+
+        .first-view h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--sub-accent);
+            margin-bottom: 24px;
+            line-height: 1.4;
+            text-shadow: 2px 2px 0 #fff;
+        }
+
+        .sub-text {
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+
+        /* ========== 問題提起と解決策 ========== */
+        .problem-section {
+            background: #fff;
+            padding: 80px 20px;
+            margin-top: -50px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .problem-box {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            background: #FFF8E1;
+            padding: 40px;
+            border-radius: 20px;
+            border: 3px solid var(--accent-color);
+            position: relative;
+        }
+
+        .problem-box h2 {
+            font-size: 1.5rem;
+            color: var(--sub-accent);
+            margin-bottom: 30px;
+        }
+
+        .problem-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .problem-item {
+            background: #fff;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            color: var(--text-main);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+        }
+        
+        .problem-item::before {
+            content: "🤔";
+            margin-right: 8px;
+        }
+
+        /* 解決策へのブリッジ */
+        .solution-bridge {
+            margin-top: 30px;
+            border-top: 2px dashed rgba(0,0,0,0.1);
+            padding-top: 30px;
+        }
+
+        .arrow-icon {
+            font-size: 2rem;
+            color: var(--main-color);
+            display: block;
+            margin-bottom: 10px;
+            animation: bounce 1.5s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(5px); }
+        }
+
+        .solution-text {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--sub-accent);
+            line-height: 1.6;
+        }
+
+        .highlight-text {
+            background: linear-gradient(transparent 60%, #aeeaff 60%);
+            padding: 0 4px;
+            font-size: 1.3rem;
+            color: #000;
+        }
+
+        /* ========== 使い方の流れ ========== */
+        .howto-section {
+            padding: 100px 20px;
+        }
+
+        .howto-steps {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .howto-step {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            width: 300px;
+            box-shadow: var(--shadow-card);
+            transition: transform 0.3s;
+        }
+        
+        .howto-step:hover {
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--main-color);
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .howto-step h3 {
+            font-size: 1.2rem;
+            color: var(--sub-accent);
+            margin-bottom: 15px;
+        }
+
+        /* ========== ゲーム一覧 (横一列) ========== */
+        .games-section {
+            background: #fff;
+            padding: 100px 20px;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .game-card {
+            background: #fff;
+            border: 2px solid var(--bg-light);
+            border-radius: 20px;
+            padding: 24px 12px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--main-color);
+            box-shadow: 0 15px 35px rgba(102, 204, 255, 0.25);
+        }
+
+        .game-card::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.6; 
+            z-index: 0;
+            filter: grayscale(20%);
+        }
+
+        .game-card--wolf::before { background-image: url('wolf.png'); }
+        .game-card--meter::before { background-image: url('meter.png'); }
+        .game-card--umigame::before { background-image: url('umigame.png'); }
+        .game-card--icchi::before { background-image: url('icchi.png'); }
+
+        .game-card-content {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.85); 
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        .game-card h3 {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: var(--sub-accent);
+            margin-bottom: 8px;
+            word-break: keep-all;
+            overflow-wrap: break-word;
+        }
+
+        .game-card p {
+            color: var(--text-main);
+            font-size: 0.85rem;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+
+        .game-card .btn-game {
+            position: relative;
+            z-index: 1;
+            align-self: center;
+            width: 100%;
+        }
+
+        /* ========== 各ゲーム詳細 ========== */
+        .game-detail {
+            padding: 100px 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .game-detail:nth-child(even) {
+            background: #fff;
+        }
+
+        .game-detail-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .game-detail-img {
+            flex-shrink: 0;
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+            background: #fff;
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .game-detail-content {
+            flex: 1;
+        }
+
+        .game-detail-content h3 {
+            font-size: 1.8rem;
+            color: var(--sub-accent);
+            margin-bottom: 15px;
+            border-bottom: 3px solid var(--main-color);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .game-meta-info {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .meta-badge {
+            background: #fff;
+            border: 1px solid var(--main-color);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--sub-accent);
+        }
+
+        .game-description {
+            color: var(--text-sub);
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+        
+        .game-example {
+            background: #FFF8E1;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            color: #5d4037;
+        }
+
+        /* ========== FAQ ========== */
+        .faq-section {
+            background: #fff;
+            padding: 100px 20px;
+        }
+
+        .faq-list {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #eee;
+            padding: 30px 0;
+        }
+
+        .faq-question {
+            font-weight: 900;
+            color: var(--sub-accent);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.1rem;
+        }
+
+        .faq-question::before {
+            content: "Q";
+            background: var(--main-color);
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            border-radius: 50%;
+            font-size: 1rem;
+            flex-shrink: 0;
+            font-weight: 900;
+        }
+
+        .faq-answer {
+            color: var(--text-sub);
+            padding-left: 47px;
+            line-height: 1.8;
+            position: relative;
+        }
+
+        .faq-answer::before {
+            content: "A.";
+            font-weight: 900;
+            color: var(--accent-color);
+            position: absolute;
+            left: 15px;
+            top: 0;
+        }
+
+        /* ========== ゲーム開始CTA ========== */
+        .start-cta {
+            background: linear-gradient(135deg, var(--main-color), #33A8FF);
+            padding: 100px 20px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .start-cta h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            font-weight: 900;
+        }
+
+        .start-cta p {
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+
+        .start-cta .btn-main {
+            background: #fff;
+            color: var(--sub-accent);
+            box-shadow: 0 4px 0 #ccc, 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .start-cta .btn-main:hover {
+            box-shadow: 0 2px 0 #ccc, 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(2px);
+        }
+
+        /* ========== メッセージ投稿欄 ========== */
+        .contact-section {
+            padding: 100px 20px;
+            background: var(--bg-light);
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            color: var(--sub-accent);
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+            background: #fafafa;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--main-color);
+            background: #fff;
+        }
+
+        .contact-form .btn-main {
+            width: 100%;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* ========== フッター ========== */
+        footer {
+            background: var(--sub-accent);
+            color: #fff;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            width: 100px;
+            margin-bottom: 16px;
+            border-radius: 12px;
+        }
+
+        .contact-info {
+            margin-bottom: 12px;
+        }
+
+        .contact-info a {
+            color: var(--main-color);
+            text-decoration: none;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        footer p.copyright {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        /* ========== レスポンシブ ========== */
+        @media (max-width: 1024px) {
+            .game-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: #fff;
+                flex-direction: column;
+                padding: 30px 20px;
+                gap: 20px;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-toggle {
+                display: block;
+            }
+
+            .first-view {
+                padding: 120px 20px 80px;
+            }
+
+            .first-view h1 {
+                font-size: 1.8rem;
+            }
+
+            .game-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .game-detail-inner {
+                flex-direction: column;
+                text-align: center;
+                gap: 30px;
+            }
+            
+            .btn-main {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* 浮遊アニメーション */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ローディング画面 -->
+    <div id="loading-screen">
+        <img src="team-logo.png" alt="Loading..." class="loading-logo">
+        <div class="loading-text">NOW LOADING...</div>
+    </div>
+
+    <!-- ナビゲーション -->
+    <nav class="navbar">
+        <a href="#" class="nav-logo">🎮 アイスブレイクゲームひろば</a>
+        <button class="nav-toggle" onclick="toggleNav()">☰</button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#howto">使い方</a></li>
+            <li><a href="#games">ゲーム一覧</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#contact">お問い合わせ</a></li>
+        </ul>
+    </nav>
+
+    <!-- ファーストビュー -->
+    <header class="first-view" id="home">
+        <div class="container">
+            <p class="tagline">＼ 準備時間 0秒！ ／</p>
+            <h1>グループワークの沈黙を<br>ゲームで打破しよう！</h1>
+            <p class="sub-text">登録不要・アプリDL不要！Webサイトで今すぐプレイできます</p>
+            <!-- リンク先をmenu.htmlにし、クラスに transition-link を追加 -->
+            <a href="menu.html" class="btn-main transition-link">今すぐゲームで遊ぶ！</a>
+        </div>
+    </header>
+
+    <!-- 問題提起 -->
+    <section class="problem-section" id="about">
+        <div class="container">
+            <div class="problem-box">
+                <h2>大学のグループワーク、<br>こんな経験ありませんか？</h2>
+                <div class="problem-list">
+                    <div class="problem-item">初対面で何を話せばいいかわからない</div>
+                    <div class="problem-item">場が温まるまでに時間がかかる</div>
+                    <div class="problem-item">一部の人だけが話してしまう</div>
+                </div>
+
+                <!-- 解決策へのブリッジ -->
+                <div class="solution-bridge">
+                    <span class="arrow-icon">▼</span>
+                    <p class="solution-text">
+                        そこで、<br>
+                        <span class="highlight-text">気軽に価値観を知れるゲーム</span>を<br>
+                        あつめたサービスを作りました！
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 使い方の流れ -->
+    <section class="howto-section" id="howto">
+        <div class="container">
+            <h2 class="section-title">📖 使い方はかんたん3ステップ</h2>
+            <div class="howto-steps">
+                <div class="howto-step">
+                    <div class="step-number">1</div>
+                    <h3>ゲームを選ぶ</h3>
+                    <p>4つのゲームから<br>シーンに合ったものを選択</p>
+                </div>
+                <div class="howto-step">
+                    <div class="step-number">2</div>
+                    <h3>人数を入力</h3>
+                    <p>参加人数とあだ名を<br>登録するだけ</p>
+                </div>
+                <div class="howto-step">
+                    <div class="step-number">3</div>
+                    <h3>ゲーム開始！</h3>
+                    <p>お題が出るので<br>みんなで楽しもう</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ゲーム一覧 -->
+    <section class="games-section" id="games">
+        <div class="container">
+            <h2 class="section-title">🎉 厳選4ゲームのラインナップ</h2>
+            <div class="game-grid">
+                <div class="game-card game-card--wolf">
+                    <div class="game-card-content">
+                        <h3>🐺 自己紹介人狼</h3>
+                        <p>心理戦で互いの素顔が見える！</p>
+                    </div>
+                    <a href="#game-wolf" class="btn-game">詳細を見る</a>
+                </div>
+                <div class="game-card game-card--meter">
+                    <div class="game-card-content">
+                        <h3>🔢 この数字どんな数字？</h3>
+                        <p>数字で価値観を表現！</p>
+                    </div>
+                    <a href="#game-meter" class="btn-game">詳細を見る</a>
+                </div>
+                <div class="game-card game-card--umigame">
+                    <div class="game-card-content">
+                        <h3>🐢 推理トークゲーム</h3>
+                        <p>協力して真相に迫る！</p>
+                    </div>
+                    <a href="#game-umigame" class="btn-game">詳細を見る</a>
+                </div>
+                <div class="game-card game-card--icchi">
+                    <div class="game-card-content">
+                        <h3>🎯 みんなで一致ゲーム</h3>
+                        <p>回答一致で盛り上がる！</p>
+                    </div>
+                    <a href="#game-icchi" class="btn-game">詳細を見る</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 各ゲーム詳細 -->
+    <section class="game-detail" id="game-wolf">
+        <div class="container">
+            <div class="game-detail-inner">
+                <img src="wolf.png" alt="自己紹介人狼" class="game-detail-img">
+                <div class="game-detail-content">
+                    <h3>🐺 自己紹介人狼</h3>
+                    <div class="game-meta-info">
+                        <span class="meta-badge">⏱️ 5〜15分</span>
+                        <span class="meta-badge">👥 4〜12人</span>
+                    </div>
+                    <p class="game-description">自己紹介の中に「1つだけ嘘」を混ぜて、誰が人狼かを当てるゲーム。嘘を考える過程で本当の情報も自然と共有され、相手の意外な一面を発見できます。</p>
+                    <p class="game-example"><strong>例：</strong>「趣味は映画、出身は大阪、好きな食べ物はカレー（1つ嘘）」</p>
+                    <a href="jinro.html" class="btn-main transition-link">このゲームで遊ぶ</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="game-detail" id="game-meter">
+        <div class="container">
+            <div class="game-detail-inner">
+                <img src="meter.png" alt="この数字どんな数字？" class="game-detail-img">
+                <div class="game-detail-content">
+                    <h3>🔢 この数字どんな数字？</h3>
+                    <div class="game-meta-info">
+                        <span class="meta-badge">⏱️ 5〜10分</span>
+                        <span class="meta-badge">👥 3〜10人</span>
+                    </div>
+                    <p class="game-description">お題に対して1〜100の数字で自分の価値観を表現。「なぜその数字？」から会話が自然に広がり、相手の考え方や性格を知ることができます。</p>
+                    <p class="game-example"><strong>お題例：</strong>「一人時間の充実度」「新しいことに挑戦する意欲」「健康意識の高さ」</p>
+                    <a href="kono-suji.html" class="btn-main transition-link">このゲームで遊ぶ</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="game-detail" id="game-umigame">
+        <div class="container">
+            <div class="game-detail-inner">
+                <img src="umigame.png" alt="推理トークゲーム" class="game-detail-img">
+                <div class="game-detail-content">
+                    <h3>🐢 推理トークゲーム</h3>
+                    <div class="game-meta-info">
+                        <span class="meta-badge">⏱️ 5〜20分</span>
+                        <span class="meta-badge">👥 3〜8人</span>
+                    </div>
+                    <p class="game-description">司会が出す謎に対して「はい/いいえ」で答えられる質問を投げかけ、真相を推理するゲーム。質問すること自体が貢献になるので、発言のハードルが低いのが特徴です。</p>
+                    <p class="game-example"><strong>ポイント：</strong>協力型なので、全員で一体感を感じられます</p>
+                    <a href="umikame.html" class="btn-main transition-link">このゲームで遊ぶ</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="game-detail" id="game-icchi">
+        <div class="container">
+            <div class="game-detail-inner">
+                <img src="icchi.png" alt="みんなで一致ゲーム" class="game-detail-img">
+                <div class="game-detail-content">
+                    <h3>🎯 みんなで一致ゲーム</h3>
+                    <div class="game-meta-info">
+                        <span class="meta-badge">⏱️ 5〜15分</span>
+                        <span class="meta-badge">👥 3〜12人</span>
+                    </div>
+                    <p class="game-description">お題に対する回答が全員一致するまで繰り返すゲーム。一致しなくても「なぜそう思った？」で会話が広がり、価値観の共有につながります。</p>
+                    <p class="game-example"><strong>お題例：</strong>「朝一番に飲みたいドリンク」「ストレス解消法」「休日にしたいこと」</p>
+                    <a href="icchi.html" class="btn-main transition-link">このゲームで遊ぶ</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ゲーム開始CTA -->
+    <section class="start-cta">
+        <div class="container">
+            <h2>さあ、アイスブレイクを始めよう！</h2>
+            <p>準備は不要。今すぐゲームを選んでスタート</p>
+            <a href="menu.html" class="btn-main btn-main--large transition-link">今すぐゲームで遊ぶ！</a>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section" id="faq">
+        <div class="container">
+            <h2 class="section-title">❓ よくある質問</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">登録やアプリのダウンロードは必要ですか？</div>
+                    <div class="faq-answer">不要です。Webブラウザがあればすぐに遊べます。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">何人から遊べますか？</div>
+                    <div class="faq-answer">ゲームによりますが、最低2〜3人から遊べます。最大12人程度を推奨しています。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">スマートフォンでも使えますか？</div>
+                    <div class="faq-answer">はい、スマートフォン・タブレット・PCすべてで快適に遊べます。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">授業やゼミで使っても大丈夫ですか？</div>
+                    <div class="faq-answer">もちろんです！大学のグループワークや研修での利用を想定して作成しています。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">オフラインでも使えますか？</div>
+                    <div class="faq-answer">一度ページを開けば、基本的な機能はオフラインでも動作します。</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- メッセージ投稿欄 -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <h2 class="section-title">📮 ご意見・ご要望</h2>
+            <form class="contact-form" action="#" method="post">
+                <div class="form-group">
+                    <label for="name">お名前（任意）</label>
+                    <input type="text" id="name" name="name" placeholder="例：田中太郎">
+                </div>
+                <div class="form-group">
+                    <label for="email">メールアドレス（任意）</label>
+                    <input type="email" id="email" name="email" placeholder="例：example@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="message">メッセージ</label>
+                    <textarea id="message" name="message" placeholder="ご意見、ご感想、新しいゲームのリクエストなど、お気軽にどうぞ！"></textarea>
+                </div>
+                <button type="submit" class="btn-main">送信する</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer>
+        <div class="container">
+            <img src="team-logo.png" alt="BigStone チームロゴ" class="footer-logo">
+            <p class="contact-info">
+                お問い合わせ：
+                <a href="mailto:8924049@ed.tus.ac.jp">8924049@ed.tus.ac.jp</a>
+            </p>
+            <p class="copyright">&copy; 2025 BigStone</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleNav() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+
+        // ページ遷移アニメーション（修正版）
+        document.querySelectorAll('a.transition-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetUrl = this.href;
+                const loadingScreen = document.getElementById('loading-screen');
+                
+                // ローディング画面を表示
+                loadingScreen.classList.add('active');
+
+                // 1.5秒後に画面遷移
+                setTimeout(() => {
+                    window.location.href = targetUrl;
+                }, 1500);
+            });
+        });
+    </script>
+
+</body>
+</html>
