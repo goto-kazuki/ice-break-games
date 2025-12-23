@@ -1,171 +1,100 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <title>ゲーム選択 - アイスブレイクゲームひろば</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --main-color:#66CCFF;
-      --accent-color:#FFC107;
-      --sub-accent:#333366;
-      --bg-light:#F0F8FF;
-      --text-main:#222;
-    }
-
-    *{box-sizing:border-box}
-
-    body{
-      margin:0;
-      font-family:'M PLUS Rounded 1c', "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
-      background:linear-gradient(180deg,#fff 0%,var(--bg-light) 100%);
-      color:var(--text-main);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
-
-    header{
-      padding:36px 16px 64px;
-      text-align:center;
-      background:linear-gradient(120deg,#fff7f0,#f0fbff);
-      border-bottom:3px solid var(--main-color);
-      border-bottom-left-radius:28px;
-      border-bottom-right-radius:28px;
-      position:relative;
-      overflow:visible;
-      box-shadow:0 6px 18px rgba(102,204,255,0.08);
-    }
-
-    .header-inner{max-width:940px;margin:0 auto;position:relative;z-index:2}
-    .tagline{display:inline-block;background:var(--main-color);color:#fff;padding:6px 14px;border-radius:20px;font-weight:800;margin-bottom:12px}
-    .title-block h1{margin:8px 0 6px;font-size:2rem;color:var(--sub-accent);font-weight:800}
-    .title-block p{margin:0;color:#555;font-weight:700}
-
-    main{max-width:920px;margin:0 auto;padding:36px 20px 64px}
-
-    h2.section-title{font-size:1.4rem;color:var(--sub-accent);text-align:center;margin:0 0 20px;font-weight:800}
-
-    /* Grid: 2 columns on wide, 1 column on narrow */
-    .game-grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr); /* enforce 2x2 layout on wide screens */
-      gap:22px;
-      align-items:start;
-      margin:0 auto;
-      max-width:820px;
-    }
-
+    :root{ --main-color:#66CCFF; --accent-color:#FFC107; --sub-accent:#333366; --bg-light:#F0F8FF; --text-main:#222; }
+    body{ margin:0; font-family:'M PLUS Rounded 1c', sans-serif; background:var(--bg-light); color:var(--text-main); }
+    
+    header{ padding:36px 16px 64px; text-align:center; background:linear-gradient(120deg,#fff7f0,#f0fbff); border-bottom:3px solid var(--main-color); border-bottom-left-radius:28px; border-bottom-right-radius:28px; box-shadow:0 6px 18px rgba(102,204,255,0.08); position:relative; overflow:hidden; }
+    .header-inner{ max-width:940px; margin:0 auto; position:relative; z-index:2; }
+    .tagline{ display:inline-block; background:var(--main-color); color:#fff; padding:6px 14px; border-radius:20px; font-weight:800; margin-bottom:12px; }
+    h1{ margin:8px 0 6px; font-size:2rem; color:var(--sub-accent); font-weight:800; }
+    
+    main{ max-width:920px; margin:0 auto; padding:36px 20px 64px; }
+    .section-title{ font-size:1.4rem; color:var(--sub-accent); text-align:center; margin:0 0 20px; font-weight:800; }
+    .game-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:22px; max-width:820px; margin:0 auto; }
+    
     .game-card{
-      display:block;
-      text-decoration:none;
-      color:inherit;
-      background:#fff;
-      padding:20px;
-      border:2px solid var(--main-color);
-      border-radius:14px;
-      box-shadow:0 6px 14px rgba(0,0,0,0.04);
-      transition:transform .18s ease, box-shadow .18s ease;
-      position:relative;
+      display:flex; flex-direction:column; align-items:center; text-decoration:none; color:inherit;
+      background:#fff; padding:25px; border:2px solid var(--main-color); border-radius:14px;
+      box-shadow:0 6px 14px rgba(0,0,0,0.04); transition:transform .18s ease;
     }
+    .game-card:hover{ transform: translateY(-6px); background:#fffefb; }
+    .game-icon { width:100px; height:100px; object-fit:contain; margin-bottom:15px; }
+    .game-title{ font-size:1.15rem; font-weight:800; margin:0 0 8px; color:var(--sub-accent); }
+    .game-meta{ font-weight:700; background:var(--bg-light); color:var(--sub-accent); padding:6px 10px; border-radius:8px; font-size:.85rem; }
 
-    .game-card:hover{ transform: translateY(-6px); box-shadow:0 14px 30px rgba(102,204,255,0.14); background:#fffefb; }
+    footer{ text-align:center; padding:30px 12px; color:#777; background:#fff; font-weight:700; margin-top:40px; }
+    @media (max-width:760px){ .game-grid{ grid-template-columns:1fr; } }
+    
+    /* 4つの浮遊アニメーション */
+    .corner-img-wrapper { position:absolute; inset:0; max-width:1000px; margin:0 auto; pointer-events:none; }
+    .corner-img{ position:absolute; width:90px; animation:float 4s ease-in-out infinite; opacity:0.8; filter:drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+    
+    .pos-1 { left: 10px; top: 20px; animation-delay: 0s; } /* 左上 */
+    .pos-2 { right: 10px; top: 20px; animation-delay: 1s; } /* 右上 */
+    .pos-3 { left: 40px; top: 140px; width: 70px; transform: rotate(-10deg); animation-delay: 2s; } /* 左下 */
+    .pos-4 { right: 40px; top: 140px; width: 80px; transform: rotate(10deg); animation-delay: 3s; } /* 右下 */
 
-    .game-title{ font-size:1.15rem; font-weight:800; margin:0 0 8px; color:var(--sub-accent) }
-    .game-tagline{ font-size:.95rem; color:#555; margin:0 0 12px; line-height:1.6 }
-    .game-meta{ display:inline-block; font-weight:700; background:var(--bg-light); color:var(--sub-accent); padding:6px 10px; border-radius:8px; font-size:.85rem }
-
-    footer{
-      text-align:center;
-      padding:30px 12px 36px;
-      color:#777;
-      border-top:1px solid #eee;
-      background:#fff;
-      font-weight:700;
-    }
-
-    /* decorative characters */
-    .corner-images-wrapper{
-      position:absolute;
-      inset:0;
-      max-width:940px;
-      margin:0 auto;
-      pointer-events:none;
-      z-index:1;
-      opacity:0.95;
-    }
-    .corner-img{
-      position:absolute;
-      width:100px;
-      filter:drop-shadow(0 3px 6px rgba(0,0,0,0.08));
-      animation:float 3.5s ease-in-out infinite;
-    }
-    @keyframes float{
-      0%,100%{transform:translateY(0)}
-      50%{transform:translateY(-8px)}
-    }
-    .corner-img-left{left:0;top:14px;animation-delay:0s}
-    .corner-img-sub-left{left:14px;top:120px;width:82px;transform:rotate(-8deg);animation-delay:.5s}
-    .corner-img-right{right:0;top:14px;animation-delay:1.4s}
-
-    @media (max-width:760px){
-      header{padding-top:24px;padding-bottom:48px}
-      .title-block h1{font-size:1.6rem}
-      .corner-img, .corner-img-sub-left{width:72px}
-      .game-grid{grid-template-columns:1fr}
-    }
+    @keyframes float{ 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-10px) rotate(2deg)} }
   </style>
 </head>
 <body>
   <header>
     <div class="header-inner">
       <span class="tagline">＼ 準備時間 0秒！ ／</span>
-      <div class="title-block">
-        <h1>アイスブレイクゲームひろば</h1>
-        <p>短時間で盛り上がるゲームを、すぐに遊べる形でまとめています</p>
-      </div>
+      <h1>アイスブレイクゲームひろば</h1>
+      <p style="color:#555; font-weight:700;">短時間で盛り上がるゲームを、すぐに遊べる形でまとめています</p>
     </div>
-
-    <div class="corner-images-wrapper" aria-hidden="true">
-      <img src="umigame.png" alt="ウミガメ" class="corner-img corner-img-left">
-      <img src="meter.png"   alt="メーター" class="corner-img corner-img-sub-left">
-      <img src="wolf.png"    alt="人狼"     class="corner-img corner-img-right">
+    
+    <!-- 4つの浮遊キャラ -->
+    <div class="corner-img-wrapper">
+      <img src="umigame.png" alt="" class="corner-img pos-1">
+      <img src="wolf.png"    alt="" class="corner-img pos-2">
+      <img src="meter.png"   alt="" class="corner-img pos-3">
+      <img src="icchi.png"   alt="" class="corner-img pos-4">
     </div>
   </header>
 
   <main>
-    <section aria-labelledby="games-title">
-      <h2 id="games-title" class="section-title">🎉 誰でも盛り上がる！厳選4ゲーム</h2>
+    <h2 class="section-title">🎉 誰でも盛り上がる！厳選4ゲーム</h2>
+    <div class="game-grid">
+      
+      <a href="umikame.html" class="game-card">
+        <img src="umigame.png" alt="ウミガメ" class="game-icon">
+        <h3 class="game-title">🐢 推理トークゲーム</h3>
+        <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">司会が出す謎に質問で迫る！</p>
+        <div class="game-meta">⏱️ 5〜20分 ／ 👥 3〜8人</div>
+      </a>
 
-      <div class="game-grid">
-        <a href="umikame.html" class="game-card" aria-label="推理トークゲームへ">
-          <h3 class="game-title">🐢 推理トークゲーム</h3>
-          <p class="game-tagline">司会が出す謎に、質問（はい/いいえ）で迫る推理ゲーム。会話が弾みます。</p>
-          <div class="game-meta">⏱️ 5〜20分 ／ 👥 3〜8人</div>
-        </a>
+      <a href="icchi.html" class="game-card">
+        <img src="icchi.png" alt="一致ゲーム" class="game-icon">
+        <h3 class="game-title">🎯 みんなで一致ゲーム</h3>
+        <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">回答一致で盛り上がる！</p>
+        <div class="game-meta">⏱️ 5〜15分 ／ 👥 3〜12人</div>
+      </a>
 
-        <a href="icchi.html" class="game-card" aria-label="みんなで一致ゲームへ">
-          <h3 class="game-title">🎯 みんなで一致ゲーム</h3>
-          <p class="game-tagline">短い回答で誰かと一致するまで繰り返す合わせる系。初対面でも盛り上がる！</p>
-          <div class="game-meta">⏱️ 5〜15分 ／ 👥 3〜12人</div>
-        </a>
+      <a href="jinro.html" class="game-card">
+        <img src="wolf.png" alt="人狼" class="game-icon">
+        <h3 class="game-title">🐺 自己紹介人狼</h3>
+        <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">心理戦で互いの素顔が見える！</p>
+        <div class="game-meta">⏱️ 5〜15分 ／ 👥 4〜12人</div>
+      </a>
 
-        <a href="jinro.html" class="game-card" aria-label="人狼（ライト版）へ">
-          <h3 class="game-title">🐺 自己紹介人狼</h3>
-          <p class="game-tagline">短時間で遊べるライトな人狼。役職配布の補助ツール付きで進行がラク。</p>
-          <div class="game-meta">⏱️ 5〜15分 ／ 👥 4〜12人</div>
-        </a>
+      <a href="kono-suji.html" class="game-card">
+        <img src="meter.png" alt="メーター" class="game-icon">
+        <h3 class="game-title">🔢 この数字どんな数字？</h3>
+        <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">価値観を数字で表現しよう！</p>
+        <div class="game-meta">⏱️ 5〜10分 ／ 👥 3〜10人</div>
+      </a>
 
-        <a href="kono-suji.html" class="game-card" aria-label="この数字どんな数字へ">
-          <h3 class="game-title">🔢 この数字どんな数字？</h3>
-          <p class="game-tagline">1〜100で価値観を表現し、話し合いでお互いを知るトークゲーム。</p>
-          <div class="game-meta">⏱️ 5〜10分 ／ 👥 3〜10人</div>
-        </a>
-      </div>
-    </section>
+    </div>
   </main>
 
   <footer>
