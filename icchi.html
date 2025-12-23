@@ -4,277 +4,88 @@
   <meta charset="utf-8" />
   <title>みんなで一致ゲーム - アイスブレイクゲームひろば</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --main-color: #66CCFF;
-      --main-dark: #4DB8EB;
-      --accent-color: #FFC107;
-      --sub-accent: #333366;
-      --bg-light: #F0F8FF;
-      --text-main: #333333;
-      --text-sub: #666666;
-      --shadow-card: 0 10px 25px rgba(102, 204, 255, 0.15);
-    }
+    :root { --main-color: #66CCFF; --accent-color: #FFC107; --sub-accent: #333366; --bg-light: #F0F8FF; }
+    body { margin: 0; font-family: 'M PLUS Rounded 1c', sans-serif; background: var(--bg-light); color: #333; line-height: 1.6; }
     
-    * { box-sizing: border-box; }
-    
-    body {
-      margin: 0;
-      font-family: 'M PLUS Rounded 1c', sans-serif;
-      background-color: var(--bg-light);
-      color: var(--text-main);
-      line-height: 1.6;
-    }
+    header { background: linear-gradient(135deg, #fff, #F0F8FF); padding: 30px 20px; text-align: center; border-bottom: 4px solid var(--main-color); border-radius: 0 0 40px 40px; margin-bottom: 40px; }
+    .header-icon { width: 100px; height: 100px; object-fit: contain; margin-bottom: 10px; }
+    .back-link { display: inline-block; margin-bottom: 20px; text-decoration: none; color: var(--sub-accent); font-weight: 700; padding: 8px 16px; background: #fff; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
-    /* ヘッダーデザイン */
-    header {
-      background: linear-gradient(135deg, #fff 0%, var(--bg-light) 100%);
-      padding: 30px 20px;
-      text-align: center;
-      border-bottom: 4px solid var(--main-color);
-      border-bottom-left-radius: 40px;
-      border-bottom-right-radius: 40px;
-      margin-bottom: 40px;
-    }
-
-    .header-icon {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-      margin-bottom: 10px;
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
-    }
-
-    h1 {
-      margin: 10px 0;
-      color: var(--sub-accent);
-      font-weight: 900;
-      font-size: 1.8rem;
-    }
-
-    .back-link {
-      display: inline-block;
-      margin-bottom: 20px;
-      text-decoration: none;
-      color: var(--sub-accent);
-      font-weight: 700;
-      padding: 8px 16px;
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      transition: transform 0.2s;
-    }
-    .back-link:hover { transform: translateY(-2px); }
-
-    /* メインコンテンツ */
     main { max-width: 800px; margin: 0 auto; padding: 0 20px 60px; }
+    .panel { background: #fff; border-radius: 20px; padding: 30px; margin-bottom: 30px; box-shadow: 0 10px 25px rgba(102, 204, 255, 0.15); }
+    h2 { color: var(--sub-accent); border-left: 6px solid var(--accent-color); padding-left: 12px; }
 
-    .panel {
-      background: #fff;
-      border-radius: 20px;
-      padding: 30px;
-      margin-bottom: 30px;
-      box-shadow: var(--shadow-card);
-    }
-
-    .panel h2 {
-      margin: 0 0 20px;
-      font-size: 1.3rem;
-      color: var(--sub-accent);
-      border-left: 6px solid var(--accent-color);
-      padding-left: 12px;
-      display: flex;
-      align-items: center;
-    }
-
-    /* フォーム要素 */
-    label { display: block; font-weight: 700; margin-bottom: 8px; color: var(--sub-accent); }
+    .btn { display: inline-flex; justify-content: center; padding: 12px 24px; border-radius: 50px; border: none; font-weight: 900; cursor: pointer; }
+    .btn-primary { background: linear-gradient(135deg, #FFC107, #FFD54F); color: #333; box-shadow: 0 4px 0 #DDA000; }
+    .btn-secondary { background: #fff; border: 2px solid var(--main-color); color: var(--main-color); }
     
-    input[type="number"], input[type="text"] {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: 2px solid #eee;
-      background: #fafafa;
-      font-size: 1rem;
-      transition: border-color 0.3s;
-    }
-    input:focus { outline: none; border-color: var(--main-color); background: #fff; }
-
-    /* ボタン */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 14px 28px;
-      border-radius: 50px;
-      border: none;
-      cursor: pointer;
-      font-weight: 900;
-      font-size: 1rem;
-      transition: all 0.2s;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #FFC107 0%, #FFD54F 100%);
-      color: #333;
-      box-shadow: 0 4px 0 #DDA000, 0 8px 15px rgba(255, 193, 7, 0.3);
-    }
-    .btn-primary:hover { transform: translateY(2px); box-shadow: 0 2px 0 #DDA000; }
-    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; transform: none; background: #ddd; color: #888; }
-
-    .btn-secondary {
-      background: #fff;
-      color: var(--main-color);
-      border: 2px solid var(--main-color);
-    }
-    .btn-secondary:hover { background: var(--main-color); color: #fff; }
-
-    /* ゲーム固有エリア */
-    .topic-card {
-      padding: 30px;
-      border-radius: 20px;
-      background: #FFF8E1;
-      border: 3px dashed var(--accent-color);
-      text-align: center;
-      margin-top: 20px;
-    }
-    .topic-label { color: #d48806; font-weight: 700; margin-bottom: 10px; }
-    .topic-main { font-size: 1.6rem; font-weight: 900; color: var(--sub-accent); margin-bottom: 10px; }
-    .topic-detail { font-size: 1rem; color: #666; }
-
-    .answers-row {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 15px;
-      background: #f9f9f9;
-      padding: 10px;
-      border-radius: 12px;
-    }
-    .answers-row label { margin: 0; min-width: 120px; }
+    input { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #eee; font-size: 1rem; }
+    .topic-card { padding: 30px; background: #FFF8E1; border: 3px dashed var(--accent-color); text-align: center; border-radius: 20px; margin-top: 20px; }
     
-    .locked-badge {
-      background: #E8F5E9;
-      color: #2E7D32;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 700;
-    }
-
-    ul#player-list { padding-left: 20px; color: var(--text-sub); }
-    ul#player-list li { margin-bottom: 6px; font-weight: 700; }
-
-    /* フッター */
-    footer {
-      text-align: center;
-      padding: 40px 20px;
-      color: #999;
-      font-size: 0.85rem;
-      background: var(--sub-accent);
-    }
-    .footer-logo {
-      width: 100px;
-      margin-bottom: 10px;
-      border-radius: 12px;
-    }
-
-    @media (max-width: 600px) {
-      .answers-row { flex-direction: column; align-items: stretch; text-align: left; }
-    }
+    footer { text-align: center; padding: 40px 20px; background: var(--sub-accent); color: #999; }
+    .footer-logo { width: 100px; margin-bottom: 10px; border-radius: 12px; }
   </style>
 </head>
 <body>
   <header>
-    <div class="header-inner">
-      <a href="menu.html" class="back-link">◀ メニューに戻る</a>
-      <br>
-      <img src="icchi.png" alt="アイコン" class="header-icon">
-      <h1>みんなで一致ゲーム</h1>
-      <p style="color: var(--text-sub); font-weight: 700;">回答一致で盛り上がる！</p>
-    </div>
+    <a href="menu.html" class="back-link">◀ メニューに戻る</a><br>
+    <!-- ここに icchi.png を表示 -->
+    <img src="icchi.png" alt="アイコン" class="header-icon">
+    <h1 style="margin:10px 0; color:var(--sub-accent); font-weight:900;">みんなで一致ゲーム</h1>
+    <p style="color:#666; font-weight:700;">回答一致で盛り上がる！</p>
   </header>
 
   <main>
-    <!-- ルール -->
     <section class="panel">
       <h2>📌 このゲームについて</h2>
       <p>お題に対する回答が全員一致するまで繰り返すゲーム。一致しなくても「なぜそう思った？」で会話が広がり、価値観の共有につながります。</p>
-      <p style="margin-top:15px; background:#FFF8E1; padding:10px; border-radius:10px;">
-        <strong>お題例：</strong>「朝一番に飲みたいドリンク」「ストレス解消法」「休日にしたいこと」
-      </p>
     </section>
 
-    <!-- プレイヤー設定 -->
     <section class="panel">
       <h2>① 人数とあだ名を登録</h2>
-      <div style="display:flex; gap:15px; flex-wrap:wrap; align-items:flex-end; margin-bottom:15px;">
-        <div style="flex:1; min-width:140px;">
-          <label for="player-count">人数（2〜12）</label>
-          <input type="number" id="player-count" min="2" max="12" value="4" />
-        </div>
-        <div>
-          <button class="btn btn-primary" id="init-players-btn">プレイヤー枠を作る</button>
-        </div>
+      <div style="display:flex; gap:15px; margin-bottom:15px;">
+        <div style="flex:1"><label>人数</label><input type="number" id="player-count" min="2" max="12" value="4"></div>
+        <button class="btn btn-primary" id="init-players-btn" style="align-self:flex-end;">枠作成</button>
       </div>
-      <p style="color:var(--text-sub); font-size:0.9rem;" id="player-setup-status">まだプレイヤー枠は作られていません。</p>
+      <p id="status-text" style="color:#666; font-size:0.9rem;">まだ枠は作られていません。</p>
 
       <div id="nickname-area" style="display:none; margin-top:20px; padding:20px; background:#F0F8FF; border-radius:15px;">
-        <label for="nickname-input">あだ名を入力</label>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <input type="text" id="nickname-input" placeholder="例：しもしゅん" style="flex:1;" />
+        <label>あだ名</label>
+        <div style="display:flex; gap:10px; margin-top:5px;">
+          <!-- プレースホルダーを「例：しもしゅん」に変更 -->
+          <input type="text" id="nickname-input" placeholder="例：しもしゅん">
           <button class="btn btn-secondary" id="add-nickname-btn">登録</button>
         </div>
       </div>
-
-      <ul id="player-list" style="margin-top:20px;"></ul>
+      <ul id="player-list" style="margin-top:20px; padding-left:20px; font-weight:700; color:#555;"></ul>
     </section>
 
-    <!-- お題 -->
     <section class="panel">
       <h2>② お題を決める</h2>
       <div style="text-align:center;">
         <button class="btn btn-primary" id="random-topic-btn">お題をランダムに表示</button>
-        <button class="btn btn-secondary" id="change-topic-btn" style="display:none; margin-left:10px;">別のお題にする</button>
       </div>
-
       <div class="topic-card" id="topic-card" style="display:none;">
-        <div class="topic-label" id="topic-category"></div>
-        <div class="topic-main" id="topic-main"></div>
-        <div class="topic-detail" id="topic-detail"></div>
+        <div id="topic-main" style="font-size:1.6rem; font-weight:900; color:var(--sub-accent);"></div>
+        <div id="topic-detail" style="margin-top:10px; color:#666;"></div>
       </div>
     </section>
 
-    <!-- 回答入力 -->
     <section class="panel">
-      <h2>③ 全員が回答を入力</h2>
-      <p style="color:var(--text-sub); font-size:0.9rem; margin-bottom:20px;">
-        ※ 各自の端末で入力するか、1つの端末を回して入力してください。<br>
-        ※ 入力後「ロック」ボタンで回答を隠します。
-      </p>
-
-      <div id="answers-area" style="display:none;">
-        <div id="inputs-area"></div>
-
-        <div style="text-align:center; margin-top:30px;">
-          <button class="btn btn-primary" id="submit-answers-btn" disabled>全員の回答を公開する！</button>
-        </div>
+      <h2>③ 回答入力</h2>
+      <div id="inputs-area"></div>
+      <div style="text-align:center; margin-top:30px;">
+        <button class="btn btn-primary" id="submit-btn" disabled>全員公開！</button>
       </div>
     </section>
 
-    <!-- 結果 -->
     <section class="panel" id="result-panel" style="display:none;">
       <h2>結果発表</h2>
-      <div id="result-content" style="margin-bottom:20px;"></div>
-
-      <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-        <button class="btn btn-primary" id="retry-btn" style="display:none;">もう一度（同じお題）</button>
-        <button class="btn btn-secondary" id="new-topic-btn" style="display:none;">次のお題へ</button>
+      <div id="result-content"></div>
+      <div style="margin-top:20px; text-align:center;">
+        <button class="btn btn-primary" id="retry-btn">もう一度</button>
       </div>
     </section>
   </main>
@@ -285,157 +96,86 @@
   </footer>
 
   <script>
+    /* 簡易ロジック */
     const topics = [
-      { category:"食べ物", main: "好きなおやつ", detail: "例：チョコ / ポテチ / ガム" },
-      { category:"飲み物", main: "朝一番に飲みたいドリンク", detail: "例：コーヒー / 緑茶 / 牛乳" },
-      { category:"季節", main: "好きな季節のイベント", detail: "例：花見 / 海 / 紅葉" },
-      { category:"休日", main: "休日にしたいこと", detail: "例：散歩 / 映画 / 読書" },
-      { category:"旅行", main: "行ってみたい国内の場所", detail: "例：京都 / 沖縄 / 北海道" },
-      { category:"気分", main: "今の気分を表す色", detail: "例：青 / ピンク / 黄色" },
-      { category:"食事", main: "疲れたときに食べたいもの", detail: "例：カレー / ラーメン / おにぎり" },
-      { category:"音楽", main: "よく聴く音楽ジャンル", detail: "例：J-POP / ロック / アニソン" },
-      { category:"映画", main: "好きな映画ジャンル", detail: "例：アニメ / コメディ / サスペンス" },
-      { category:"動物", main: "飼いたい動物", detail: "例：犬 / 猫 / 鳥" },
-      { category:"生活", main: "朝型か夜型か", detail: "例：朝型 / 夜型" },
-      { category:"好み", main: "甘いものvsしょっぱいもの", detail: "例：甘い / しょっぱい" },
-      { category:"買い物", main: "コンビニでよく買うもの", detail: "例：おにぎり / サンド / ドリンク" },
-      { category:"体験", main: "やってみたいアクティビティ", detail: "例：スキューバ / 温泉 / 登山" },
-      { category:"感覚", main: "好きな匂い（短く）", detail: "例：コーヒー / 緑茶 / 花" },
-      { category:"理想", main: "理想の週末の過ごし方", detail: "例：のんびり / 外出 / 会食" },
-      { category:"学習", main: "今学びたいこと", detail: "例：英語 / 料理 / プログラミング" },
-      { category:"朝食", main: "朝食に食べたいもの", detail: "例：パン / ごはん / シリアル" },
-      { category:"思い出", main: "子どもの頃の遊び", detail: "例：公園 / ゲーム / 絵本" },
-      { category:"健康", main: "ストレス解消法（短く）", detail: "例：寝る / 運動 / 食べる" }
+      { main: "好きなおやつ", detail: "例：チョコ / ポテチ / ガム" },
+      { main: "朝一番に飲みたいドリンク", detail: "例：コーヒー / 緑茶 / 牛乳" },
+      { main: "好きな季節のイベント", detail: "例：花見 / 海 / 紅葉" }
     ];
+    let players = [], targetCount = 0;
+    
+    document.getElementById('init-players-btn').onclick = () => {
+        targetCount = Number(document.getElementById('player-count').value);
+        players = []; document.getElementById('player-list').innerHTML = '';
+        document.getElementById('nickname-area').style.display = 'block';
+        document.getElementById('status-text').textContent = `あと ${targetCount} 人登録してください。`;
+    };
 
-    let players = [];
-    let targetCount = 0;
+    document.getElementById('add-nickname-btn').onclick = () => {
+        if(players.length >= targetCount) return;
+        const name = document.getElementById('nickname-input').value.trim();
+        if(!name) return;
+        players.push({ name, answer: '', locked: false });
+        const li = document.createElement('li'); li.textContent = name;
+        document.getElementById('player-list').appendChild(li);
+        document.getElementById('nickname-input').value = '';
+        
+        if(players.length === targetCount) {
+            document.getElementById('nickname-area').style.display = 'none';
+            document.getElementById('status-text').textContent = '全員登録完了！お題を決めてください。';
+            setupInputs();
+        } else {
+            document.getElementById('status-text').textContent = `登録済み：${players.length} / ${targetCount} 人`;
+        }
+    };
 
-    const playerCountInput = document.getElementById("player-count");
-    const initPlayersBtn = document.getElementById("init-players-btn");
-    const playerSetupStatusEl = document.getElementById("player-setup-status");
-    const nicknameAreaEl = document.getElementById("nickname-area");
-    const nicknameInput = document.getElementById("nickname-input");
-    const addNicknameBtn = document.getElementById("add-nickname-btn");
-    const playerListEl = document.getElementById("player-list");
-    const randomTopicBtn = document.getElementById("random-topic-btn");
-    const changeTopicBtn = document.getElementById("change-topic-btn");
-    const topicCardEl = document.getElementById("topic-card");
-    const topicCategoryEl = document.getElementById("topic-category");
-    const topicMainEl = document.getElementById("topic-main");
-    const topicDetailEl = document.getElementById("topic-detail");
-    const answersArea = document.getElementById("answers-area");
-    const inputsArea = document.getElementById("inputs-area");
-    const submitAnswersBtn = document.getElementById("submit-answers-btn");
-    const resultPanel = document.getElementById("result-panel");
-    const resultContent = document.getElementById("result-content");
-    const retryBtn = document.getElementById("retry-btn");
-    const newTopicBtn = document.getElementById("new-topic-btn");
+    document.getElementById('random-topic-btn').onclick = () => {
+        const t = topics[Math.floor(Math.random()*topics.length)];
+        document.getElementById('topic-card').style.display = 'block';
+        document.getElementById('topic-main').textContent = t.main;
+        document.getElementById('topic-detail').textContent = t.detail;
+    };
 
-    initPlayersBtn.addEventListener("click", () => {
-      const count = Number(playerCountInput.value);
-      if (Number.isNaN(count) || count < 2) { alert("2人以上を指定してください。"); return; }
-      if (count > 12) { alert("最大12人まで推奨します。"); return; }
-      targetCount = count; players = []; playerListEl.innerHTML = ""; inputsArea.innerHTML = "";
-      answersArea.style.display = "none"; resultPanel.style.display = "none"; topicCardEl.style.display = "none";
-      nicknameAreaEl.style.display = "block";
-      playerSetupStatusEl.textContent = `プレイヤー枠を ${targetCount} 人分用意しました。順にあだ名を登録してください。`;
-      submitAnswersBtn.disabled = true;
-    });
-
-    addNicknameBtn.addEventListener("click", () => {
-      if (players.length >= targetCount) { alert("すでに全員分登録されています。"); return; }
-      const nickname = nicknameInput.value.trim();
-      if (!nickname) { alert("あだ名を入力してください。"); return; }
-      if (players.some(p => p.nickname === nickname)) { alert("同じあだ名は使えません。"); return; }
-      players.push({ nickname, answer: "", locked: false });
-      const li = document.createElement("li");
-      li.textContent = `${players.length}. ${nickname}`;
-      playerListEl.appendChild(li);
-      nicknameInput.value = "";
-      if (players.length === targetCount) {
-        playerSetupStatusEl.textContent = `全員登録完了（${targetCount}人）。次にお題を決めてください。`;
-        nicknameAreaEl.style.display = "none";
-      } else {
-        playerSetupStatusEl.textContent = `登録済み：${players.length} / ${targetCount} 人`;
-      }
-    });
-
-    function showRandomTopic() {
-      const idx = Math.floor(Math.random() * topics.length);
-      const t = topics[idx];
-      topicCategoryEl.textContent = `カテゴリ：${t.category}`;
-      topicMainEl.textContent = t.main;
-      topicDetailEl.textContent = t.detail;
-      topicCardEl.style.display = "block";
-      changeTopicBtn.style.display = "inline-block";
-      if (players.length === targetCount && targetCount > 0) prepareAnswersInputs();
-      else answersArea.style.display = "none";
-      resultPanel.style.display = "none";
-    }
-    randomTopicBtn.addEventListener("click", showRandomTopic);
-    changeTopicBtn.addEventListener("click", showRandomTopic);
-
-    function prepareAnswersInputs() {
-      players.forEach(p => { p.answer = ""; p.locked = false; });
-      inputsArea.innerHTML = "";
-      players.forEach((p, i) => {
-        const wrap = document.createElement("div"); wrap.className = "answers-row";
-        const label = document.createElement("label"); label.textContent = `${i + 1}. ${p.nickname}`;
-        const input = document.createElement("input"); input.type = "text"; input.placeholder = "回答を入力"; input.dataset.idx = i;
-        input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); lockAnswer(i, input, lockBtn, wrap); }});
-        const lockBtn = document.createElement("button"); lockBtn.className = "btn btn-secondary"; lockBtn.textContent = "ロック";
-        lockBtn.style.padding = "8px 16px"; lockBtn.style.fontSize = "0.9rem";
-        lockBtn.addEventListener("click", () => lockAnswer(i, input, lockBtn, wrap));
-        wrap.appendChild(label); wrap.appendChild(input); wrap.appendChild(lockBtn);
-        inputsArea.appendChild(wrap);
-      });
-      answersArea.style.display = "block";
-      submitAnswersBtn.disabled = true;
-      resultPanel.style.display = "none";
+    function setupInputs() {
+        const area = document.getElementById('inputs-area'); area.innerHTML = '';
+        players.forEach((p, i) => {
+            const div = document.createElement('div');
+            div.style.marginBottom = '10px';
+            div.innerHTML = `<label style="font-weight:700; display:block;">${p.name}</label><div style="display:flex; gap:5px;"><input type="text" id="ans-${i}"><button class="btn btn-secondary" onclick="lock(${i})">ロック</button></div>`;
+            area.appendChild(div);
+        });
     }
 
-    function lockAnswer(index, inputEl, lockBtn, wrapEl) {
-      if (players[index].locked) return;
-      const val = (inputEl.value || "").trim();
-      if (!val) { alert("回答を入力してください。"); return; }
-      players[index].answer = val;
-      players[index].locked = true;
-      inputEl.remove(); lockBtn.remove();
-      const statusSpan = document.createElement("span"); statusSpan.className = "locked-badge"; statusSpan.textContent = "ロック済（非表示）";
-      wrapEl.appendChild(statusSpan);
-      const checkLocked = players.length > 0 && players.every(p => p.locked);
-      submitAnswersBtn.disabled = !checkLocked;
-    }
+    window.lock = (i) => {
+        const inp = document.getElementById(`ans-${i}`);
+        if(!inp.value) return;
+        players[i].answer = inp.value;
+        players[i].locked = true;
+        inp.parentElement.innerHTML = '<span style="color:green; font-weight:700; padding:10px;">ロック完了（非表示）</span>';
+        if(players.every(p => p.locked)) document.getElementById('submit-btn').disabled = false;
+    };
 
-    submitAnswersBtn.addEventListener("click", () => {
-      const normalized = players.map(p => normalizeAnswer(p.answer));
-      const first = normalized[0];
-      const allMatch = normalized.every(a => a === first);
-      let html = '<div style="display:flex;flex-direction:column;gap:10px">';
-      players.forEach((p) => {
-        html += `<div style="background:#fff;border-bottom:1px solid #eee;padding:10px;display:flex;justify-content:space-between;"><strong>${escapeHtml(p.nickname)}</strong><span>${escapeHtml(p.answer)}</span></div>`;
-      });
-      html += '</div>';
+    document.getElementById('submit-btn').onclick = () => {
+        let html = '';
+        const first = players[0].answer;
+        const allMatch = players.every(p => p.answer === first);
+        
+        players.forEach(p => {
+            html += `<div style="border-bottom:1px solid #eee; padding:10px; font-weight:700;">${p.name}: ${p.answer}</div>`;
+        });
+        
+        const title = allMatch ? '<h3 style="color:#E91E63; text-align:center;">🎉 全員一致！成功！ 🎉</h3>' : '<h3 style="color:#333; text-align:center;">残念！一致ならず…</h3>';
+        
+        document.getElementById('result-content').innerHTML = title + html;
+        document.getElementById('result-panel').style.display = 'block';
+    };
 
-      if (allMatch) {
-        resultContent.innerHTML = `<div style="font-size:1.5rem;color:#E91E63;font-weight:900;margin-bottom:10px;text-align:center;">🎉 全員一致！大成功！ 🎉</div>` + html;
-      } else {
-        resultContent.innerHTML = `<div style="font-size:1.2rem;color:var(--sub-accent);font-weight:900;margin-bottom:10px;text-align:center;">残念！一致ならず…</div>` + html;
-      }
-      retryBtn.style.display = 'inline-flex'; newTopicBtn.style.display = 'inline-flex';
-      resultPanel.style.display = 'block';
-    });
-
-    retryBtn.addEventListener("click", () => {
-      players.forEach(p => { p.answer = ''; p.locked = false; });
-      prepareAnswersInputs();
-      resultPanel.style.display = "none";
-    });
-    newTopicBtn.addEventListener("click", showRandomTopic);
-
-    function normalizeAnswer(s){ if(!s)return ''; return String(s).trim().toLowerCase(); }
-    function escapeHtml(s){ if(s==null)return ''; return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+    document.getElementById('retry-btn').onclick = () => {
+        players.forEach(p => { p.answer = ''; p.locked = false; });
+        setupInputs();
+        document.getElementById('result-panel').style.display = 'none';
+        document.getElementById('submit-btn').disabled = true;
+    };
   </script>
 </body>
 </html>
