@@ -823,7 +823,6 @@
             <p class="tagline">＼ 準備時間 0秒！ ／</p>
             <h1>グループワークの沈黙を<br>ゲームで打破しよう！</h1>
             <p class="sub-text">登録不要・アプリDL不要！Webサイトで今すぐプレイできます</p>
-            <!-- リンク先をmenu.htmlにし、クラスに transition-link を追加 -->
             <a href="menu.html" class="btn-main transition-link">今すぐゲームで遊ぶ！</a>
         </div>
     </header>
@@ -1071,7 +1070,7 @@
             });
         });
 
-        // ページ遷移アニメーション（修正版）
+        // ページ遷移アニメーション
         document.querySelectorAll('a.transition-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
